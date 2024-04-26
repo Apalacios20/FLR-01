@@ -1,5 +1,5 @@
 name: flare
-description: "A new Flutter project."
+description: "A Blockchain Project"
 publish_to: 'none'
 version: 0.1.0
 
@@ -7,6 +7,18 @@ environment:
   sdk: '>=3.3.0 <4.0.0'
 
 dependencies:
+  get: ^4.6.5
+  firebase_core: ^2.25.4
+  firebase_auth: ^4.17.5
+  cloud_firestore: ^4.15.5
+  firebase_storage: ^11.6.6
+  google_fonts: ^5.1.0
+  font_awesome_flutter: ^10.7.0
+  card_stack_widget: ^0.1.5
+  flutter_cors: ^1.5.0
+  localstorage: ^4.0.0+1
+  http: ^1.2.0
+  logger: ^2.2.0
   flutter:
     sdk: flutter
 

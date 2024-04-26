@@ -1,0 +1,3 @@
+curl -X POST -H "Content-type: application/json" \
+  -H "x-apikey: YVbYgI9hSIQoKl480TDCR6ow9DRy0J584LNJ4vlwLQPccKuw" \
+  -d '{"method": "server_info"}' https://api.flare.network/xrpl | jq

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "792093820716",
+    "project_id": "flr-blockchains",
+    "storage_bucket": "flr-blockchains.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:792093820716:android:9e2bc3c4b7448732574e89",
+        "android_client_info": {
+          "package_name": "com.example.flare"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVtk4A8Ef0BjwAmMZMXrSCrujkwitXXJo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
