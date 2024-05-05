@@ -21,6 +21,8 @@ dependencies:
   logger: ^2.2.0
   flutter:
     sdk: flutter
+  flutter_svg: ^2.0.10+1
+  fl_chart: ^0.66.2
 
 dev_dependencies:
   flutter_test:
@@ -29,3 +31,5 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    -  assets/

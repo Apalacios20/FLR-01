@@ -25,58 +25,58 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
+    return const GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: "FLR-01",
       home: Scaffold(
-        appBar: AppBar(
-          leading: const Icon(Icons.monetization_on_outlined),
-          title: Text(
-            "Flare-01",
-            style: GoogleFonts.orbitron(
-              textStyle: const TextStyle(
-                fontSize: 30,
-                letterSpacing: 10,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ),
-          centerTitle: true,
-          actions: [
-            // TODO: place in list and iterate to reduce repeating code
-            TextButton(
-              onPressed: () {},
-              child: Text(
-                "Dashboard",
-                style: GoogleFonts.orbitron(
-                  textStyle: const TextStyle(letterSpacing: 1),
-                ),
-              ),
-            ),
-            TextButton(
-              onPressed: () {},
-              child: Text(
-                "Portfolio",
-                style: GoogleFonts.orbitron(
-                  textStyle: const TextStyle(letterSpacing: 1),
-                ),
-              ),
-            ),
-            TextButton(
-              onPressed: () {},
-              child: Text(
-                "Watch list",
-                style: GoogleFonts.orbitron(
-                  textStyle: const TextStyle(letterSpacing: 1),
-                ),
-              ),
-            ),
-            const SizedBox(
-              width: 25,
-            ),
-          ],
-        ),
-        body: const Home(),
+        // appBar: AppBar(
+        //   leading: const Icon(Icons.monetization_on_outlined),
+        //   title: Text(
+        //     "Flare-01",
+        //     style: GoogleFonts.orbitron(
+        //       textStyle: const TextStyle(
+        //         fontSize: 30,
+        //         letterSpacing: 10,
+        //         fontWeight: FontWeight.w500,
+        //       ),
+        //     ),
+        //   ),
+        //   centerTitle: true,
+        //   actions: [
+        //     // TODO: place in list and iterate to reduce repeating code
+        //     TextButton(
+        //       onPressed: () {},
+        //       child: Text(
+        //         "Dashboard",
+        //         style: GoogleFonts.orbitron(
+        //           textStyle: const TextStyle(letterSpacing: 1),
+        //         ),
+        //       ),
+        //     ),
+        //     TextButton(
+        //       onPressed: () {},
+        //       child: Text(
+        //         "Portfolio",
+        //         style: GoogleFonts.orbitron(
+        //           textStyle: const TextStyle(letterSpacing: 1),
+        //         ),
+        //       ),
+        //     ),
+        //     TextButton(
+        //       onPressed: () {},
+        //       child: Text(
+        //         "Watch list",
+        //         style: GoogleFonts.orbitron(
+        //           textStyle: const TextStyle(letterSpacing: 1),
+        //         ),
+        //       ),
+        //     ),
+        //     const SizedBox(
+        //       width: 25,
+        //     ),
+        //   ],
+        // ),
+        body: Home(),
       ),
     );
   }
