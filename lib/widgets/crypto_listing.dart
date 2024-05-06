@@ -8,11 +8,11 @@ import 'package:get/get.dart';
 
 class CryptoListing extends StatefulWidget {
   final CryptoData crypto;
-  // final Controller controller;
+  final Controller controller;
 
   const CryptoListing({
     required this.crypto,
-    // required this.controller,
+    required this.controller,
     super.key,
   });
 
@@ -26,35 +26,18 @@ class _CryptoListingState extends State<CryptoListing> {
   @override
   void initState() {
     super.initState();
-    isPercentagePositive = isPositive(widget.crypto.twentyFourHrPercentChange);
+    isPercentagePositive =
+        widget.controller.isPositive(widget.crypto.twentyFourHrPercentChange);
   }
 
-  String formatNumberWithDecimalPlaces(double number, int decimals) {
-    return number.toStringAsFixed(decimals);
-  }
-
-  String shortenTotalNumber(double number) {
-    if (number >= 1000000000) {
-      return '\$${(number / 1000000000).toStringAsFixed(2)}B';
-    } else if (number >= 1000000) {
-      return '\$${(number / 1000000).toStringAsFixed(2)}M';
-    } else {
-      return "\$${number.toString()}";
-    }
-  }
-
-  bool isPositive(double number) {
-    return number >= 0;
-  }
+  // bool isPositive(double number) {
+  //   return number >= 0;
+  // }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => _dialogBuilder(
-        context,
-        widget.crypto,
-        // widget.controller,
-      ),
+      onTap: () => _dialogBuilder(context),
       child: Row(
         children: [
           Expanded(
@@ -100,9 +83,7 @@ class _CryptoListingState extends State<CryptoListing> {
                     ),
                     Text(
                       widget.crypto.symbol,
-                      style: const TextStyle(
-                          // fontWeight: FontWeight.bold,
-                          ),
+                      style: const TextStyle(),
                     ),
                   ],
                 ),
@@ -110,12 +91,14 @@ class _CryptoListingState extends State<CryptoListing> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      "\$ ${formatNumberWithDecimalPlaces(widget.crypto.price, 5)}",
+                      widget.controller.formatPrice(widget.crypto.price),
+                      // "${widget.crypto.price}",
                       style: const TextStyle(
                           fontSize: 15, fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      "${formatNumberWithDecimalPlaces(widget.crypto.twentyFourHrPercentChange, 2)}%",
+                      widget.controller.formatPercentage(
+                          widget.crypto.twentyFourHrPercentChange),
                       style: TextStyle(
                         color: isPercentagePositive ? Colors.green : Colors.red,
                         fontWeight: FontWeight.w600,
@@ -131,160 +114,227 @@ class _CryptoListingState extends State<CryptoListing> {
     );
   }
 
-  Future<void> _dialogBuilder(BuildContext context, CryptoData crypto) {
+  Future<void> _dialogBuilder(BuildContext context) {
+    void favorite(CryptoData crytpo, RxList list) {
+      if (list.contains(crytpo)) {
+        list.remove(crytpo);
+      } else {
+        list.add(crytpo);
+      }
+    }
+
     return showDialog<void>(
       context: context,
       builder: (BuildContext context) {
         return Dialog(
           child: Container(
-            height: 600,
+            // height: 600,
+            // TODO: MAKE DYNAMIC
             width: 400,
             padding: const EdgeInsets.all(15),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    IconButton(
-                      onPressed: () => Get.back(),
-                      icon: const Icon(Icons.close),
-                    ),
-                    Text(
-                      widget.crypto.name,
-                      style: const TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w600,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton(
+                        onPressed: () => Get.back(),
+                        icon: const Icon(Icons.close),
                       ),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        // TODO: append to external list that will populate other page
-                        debugPrint("Added to watchlist");
-                      },
-                      icon: const Icon(Icons.star_border),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: SvgPicture.asset(
-                        "assets/${widget.crypto.symbol}.svg",
-                        width: 55,
-                        height: 55,
+                      Text(
+                        widget.crypto.name,
+                        style: const TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Expanded(
-                      flex: 5,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            widget.crypto.name,
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey[600],
-                            ),
+                      Obx(
+                        () => IconButton(
+                          onPressed: () {
+                            // TODO: append to external list that will populate other page
+                            favorite(
+                                widget.crypto, widget.controller.watchList);
+                            debugPrint("${widget.controller.watchList.length}");
+                          },
+                          icon: Icon(
+                            Icons.star,
+                            color: widget.controller.watchList
+                                    .contains(widget.crypto)
+                                ? Colors.yellow[700]
+                                : Colors.grey,
+                            // fill: 5.0,
                           ),
-                          Row(
-                            children: [
-                              const Text(
-                                "\$",
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: SvgPicture.asset(
+                          "assets/${widget.crypto.symbol}.svg",
+                          width: 55,
+                          height: 55,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Expanded(
+                        flex: 5,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              widget.crypto.symbol,
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.grey[600],
+                              ),
+                            ),
+                            Row(
+                              children: [
+                                const Text(
+                                  "\$",
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(
-                                width: 5,
-                              ),
-                              Text(
-                                formatNumberWithDecimalPlaces(
-                                    widget.crypto.price, 5),
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
+                                const SizedBox(
+                                  width: 5,
                                 ),
-                              ),
-                              const SizedBox(
-                                width: 8,
-                              ),
-                              Container(
-                                padding:
-                                    const EdgeInsets.fromLTRB(15, 6, 15, 6),
-                                decoration: BoxDecoration(
-                                  color: isPercentagePositive
-                                      ? Colors.green.withOpacity(0.15)
-                                      : Colors.red.withOpacity(0.15),
-                                  borderRadius: BorderRadius.circular(10),
+                                Text(
+                                  widget.controller
+                                      .formatPrice(widget.crypto.price),
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                                child: Center(
-                                  child: Text(
-                                    '${formatNumberWithDecimalPlaces(widget.crypto.twentyFourHrPercentChange, 2)}%',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: isPercentagePositive
-                                          ? Colors.green
-                                          : Colors.red,
+                                const SizedBox(
+                                  width: 8,
+                                ),
+                                Container(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(15, 6, 15, 6),
+                                  decoration: BoxDecoration(
+                                    color: isPercentagePositive
+                                        ? Colors.green.withOpacity(0.15)
+                                        : Colors.red.withOpacity(0.15),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      widget.controller.formatPercentage(
+                                        widget.crypto.twentyFourHrPercentChange,
+                                      ),
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: isPercentagePositive
+                                            ? Colors.green
+                                            : Colors.red,
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                const MainLineChart(),
-                const SizedBox(
-                  height: 10,
-                ),
-                const Divider(),
-                const SizedBox(
-                  height: 10,
-                ),
-                const Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "Statistics",
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    ],
                   ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                ModalStatistic(
-                  label: "24hr Volume",
-                  stat: shortenTotalNumber(widget.crypto.twentyFourHrVolume),
-                ),
-                ModalStatistic(
-                  label: "24hr volume change",
-                  stat: shortenTotalNumber(
-                      widget.crypto.twentyFourHrVolumeChange),
-                ),
-                ModalStatistic(
-                  label: "Max Supply",
-                  stat: shortenTotalNumber(widget.crypto.maxSupply as double),
-                ),
-                ModalStatistic(
-                  label: "Total Supply",
-                  stat: shortenTotalNumber(widget.crypto.totalSupply),
-                ),
-                ModalStatistic(
-                  label: "1hr %",
-                  stat: shortenTotalNumber(widget.crypto.oneHrPercentChange),
-                ),
-              ],
+                  const MainLineChart(),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const Divider(),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "Statistics",
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  // TODO: ITERATE OVER THE NAMES OF FIELDS AND DISPLAY
+                  ModalStatistic(
+                    label: "24hr Volume",
+                    stat: widget.controller
+                        .shortenDollarAmount(widget.crypto.twentyFourHrVolume),
+                  ),
+                  ModalStatistic(
+                    label: "24hr Price Change",
+                    stat: widget.controller.shortenDollarAmount(
+                        widget.crypto.twentyFourHrVolumeChange),
+                  ),
+                  ModalStatistic(
+                    label: "Market Cap",
+                    stat: widget.controller
+                        .shortenDollarAmount(widget.crypto.marketCap),
+                  ),
+                  ModalStatistic(
+                    label: "Fully Diluted Market",
+                    stat: widget.controller.shortenDollarAmount(
+                        widget.crypto.fullyDilutedMarketCap),
+                  ),
+                  ModalStatistic(
+                    label: "Max Supply",
+                    stat: widget.crypto.maxSupply == null
+                        ? "Inifinite"
+                        : widget.controller.shortenRegularNumber(
+                            widget.crypto.maxSupply as double),
+                  ),
+                  ModalStatistic(
+                    label: "Total Supply",
+                    stat: widget.controller
+                        .shortenRegularNumber(widget.crypto.totalSupply),
+                  ),
+                  ModalStatistic(
+                    label: "1hr",
+                    stat: widget.controller
+                        .formatPercentage(widget.crypto.oneHrPercentChange),
+                    isPercentage: true,
+                  ),
+                  ModalStatistic(
+                    label: "24hr",
+                    stat: widget.controller.formatPercentage(
+                        widget.crypto.twentyFourHrPercentChange),
+                    isPercentage: true,
+                  ),
+                  ModalStatistic(
+                    label: "7d",
+                    stat: widget.controller
+                        .formatPercentage(widget.crypto.sevenDayPercentChange),
+                    isPercentage: true,
+                  ),
+                  ModalStatistic(
+                    label: "30d",
+                    stat: widget.controller
+                        .formatPercentage(widget.crypto.thirtyDayPercentChange),
+                    isPercentage: true,
+                  ),
+                  ModalStatistic(
+                    label: "90d",
+                    stat: widget.controller
+                        .formatPercentage(widget.crypto.ninetyDayPercentChange),
+                    isPercentage: true,
+                  ),
+                ],
+              ),
             ),
           ),
         );

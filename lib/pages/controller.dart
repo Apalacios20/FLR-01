@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:html';
+import 'dart:math';
 
 import 'package:flare/models/crypto.dart';
+import 'package:flare/widgets/left_view_top_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -12,8 +14,20 @@ class Controller extends GetxController {
   late final LocalStorage _localStorage;
   late final Logger logger;
   String? getList;
-  RxList cryptoList = [].obs;
-  RxList watchList = [].obs;
+  RxList<CryptoData> cryptoList = <CryptoData>[].obs;
+  RxList<CryptoData> watchList = <CryptoData>[].obs;
+  RxList<CryptoData> leftViewTopWidgetList = <CryptoData>[].obs;
+
+  List<String> get _listTextTabToggle =>
+      ["Tab A (10)", "Tab B (6)", "Tab C (9)"];
+
+  List<String> get _listTextSelectedToggle =>
+      ["Select A (10)", "Select B (6)", "Select C (9)"];
+
+  List<String> get _listGenderText => ["Male", "Female"];
+
+  // RxList leftViewTopWidgetList = <CryptoData>[].obs;
+  // List<CryptoData> leftViewTopWidgetList = [];
 
   Controller() {}
 
@@ -28,6 +42,9 @@ class Controller extends GetxController {
     await _initLocalStorage();
     await checkForCryptoList();
     await loadCryptoList();
+    // leftViewTopWidgetList = getRandomCryptoList(cryptoList, 3).obs;
+    await buildLeftTopWidgetList();
+    logger.e("${leftViewTopWidgetList[0]}");
   }
 
   // STORAGE
@@ -45,29 +62,25 @@ class Controller extends GetxController {
     }
   }
 
+  Future<void> buildLeftTopWidgetList() async {
+    RxList<CryptoData> leftList = getRandomCryptoList(cryptoList, 3);
+    leftViewTopWidgetList.addAll(leftList);
+  }
+
   Future<void> loadCryptoList() async {
     getList = await _localStorage.getItem("Crypto_List");
-    // ADD CHECK IF LIST IS EMPTY TO CALL LIST
-    // if (getList == null || getList.isEmpty) {
-    //   debugPrint("No current list ... Data fetched!");
-    //   await fetchData();
-    // }
 
     var decodedString = jsonDecode(getList!);
     final Map map = Map.from(decodedString);
-    // Extract the 'data' field from the map
     List<dynamic> dataList = map['data'];
 
-    // Iterate over the list of objects and map them to CryptoData objects
     for (var data in dataList) {
       CryptoData cryptoData = CryptoData.fromMap(data);
       cryptoList.add(cryptoData);
     }
 
-    // Is this list full
     logger.i(cryptoList.length);
 
-    // Print the list of CryptoData objects
     cryptoList.forEach((cryptoData) {
       logger.i(cryptoData.toString());
     });
@@ -99,6 +112,94 @@ class Controller extends GetxController {
       }
     } catch (e) {
       debugPrint("Error: $e");
+    }
+  }
+
+  // MOVE AROUND STORED DATA FUNCTIONS
+  RxList<CryptoData> getRandomCryptoList(
+      RxList<CryptoData> cryptoList, int count) {
+    Random random = Random();
+    RxList<CryptoData> selectedList = <CryptoData>[].obs;
+
+    if (count >= cryptoList.length) {
+      return cryptoList;
+    }
+
+    while (selectedList.length < count) {
+      int index = random.nextInt(cryptoList.length);
+      CryptoData crypto = cryptoList[index];
+
+      if (!selectedList.contains(crypto)) {
+        selectedList.add(crypto);
+      }
+    }
+
+    return selectedList;
+  }
+  // List getRandomCryptoList(RxList cryptoList, int count) {
+  //   Random random = Random();
+  //   List selectedList = [];
+
+  //   if (count >= cryptoList.length) {
+  //     return cryptoList;
+  //   }
+
+  //   while (selectedList.length < count) {
+  //     int index = random.nextInt(cryptoList.length);
+  //     var crypto = cryptoList[index];
+
+  //     if (!selectedList.contains(crypto)) {
+  //       selectedList.add(crypto);
+  //     }
+  //   }
+
+  //   return selectedList;
+  // }
+
+  // NUMBER CLEAN UP FUNCTION
+  bool isPositive(double number) {
+    return number >= 0;
+  }
+
+  String formatNumberWithDecimalPlaces(double number, int decimals) {
+    return number.toStringAsFixed(decimals);
+  }
+
+  String formatPercentage(double number) {
+    return "${number.toStringAsFixed(2)}%";
+  }
+
+  String shortenDollarAmount(double number) {
+    if (number < 0) {
+      return '\$ ${number.toStringAsFixed(4)}';
+    } else if (number >= 1000000000000) {
+      return '\$ ${(number / 1000000000000).toStringAsFixed(1)}T';
+    } else if (number >= 1000000000) {
+      return '\$ ${(number / 1000000000).toStringAsFixed(1)}B';
+    } else if (number >= 1000000) {
+      return '\$ ${(number / 1000000).toStringAsFixed(2)}M';
+    } else {
+      return "\$${number.toString()}";
+    }
+  }
+
+  String shortenRegularNumber(double number) {
+    if (number >= 1000000000) {
+      return '${(number / 1000000000).toStringAsFixed(1)}B';
+    } else if (number >= 1000000) {
+      return '${(number / 1000000).toStringAsFixed(2)}M';
+    } else {
+      return number.toString();
+    }
+  }
+
+  String formatPrice(double number) {
+    if (number <= 1) {
+      return "\$ ${number.toStringAsFixed(5)}";
+    } else if (number < 10) {
+      return "\$ ${number.toStringAsFixed(3)}";
+    } else {
+      return "\$ ${number.toStringAsFixed(2)}";
     }
   }
 }

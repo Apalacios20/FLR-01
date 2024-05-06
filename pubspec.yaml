@@ -23,6 +23,8 @@ dependencies:
     sdk: flutter
   flutter_svg: ^2.0.10+1
   fl_chart: ^0.66.2
+  flutter_easyloading: ^3.0.5
+  flutter_toggle_tab: ^1.4.1
 
 dev_dependencies:
   flutter_test:
