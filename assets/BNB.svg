@@ -11,11 +11,6 @@
    xml:space="preserve"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
-<style
-   type="text/css">
-	.st0{fill:#f0b90b;}
-	.st1{fill:#FFFFFF;}
-</style>
 <path
    class="st0" fill="#f0b90b"
    d="M 250,0 C 388.08093,0 500,111.91907 500,250 500,388.08093 388.08093,500 250,500 111.91907,500 0,388.08093 0,250 0,111.91907 111.91907,0 250,0 Z"/>

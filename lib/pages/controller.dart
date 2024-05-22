@@ -7,6 +7,7 @@ import 'package:flare/widgets/left_view_top_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:logger/logger.dart';
 
@@ -18,16 +19,23 @@ class Controller extends GetxController {
   RxList<CryptoData> watchList = <CryptoData>[].obs;
   RxList<CryptoData> leftViewTopWidgetList = <CryptoData>[].obs;
 
-  List<String> get _listTextTabToggle =>
-      ["Tab A (10)", "Tab B (6)", "Tab C (9)"];
+  // DROPDOWN
+  RxList<String> dropDownList = <String>[].obs;
+  List<String> dropDownSymbols = [];
+  String dropDownValue = "Bitcoin";
+  String dropDownCurrency = "US";
+  String dropDownValueTwo = "Ethereum";
+  RxList<String> dropDownCurrencies = ["US"].obs;
+  TextEditingController cryptoConvertController = TextEditingController();
+  double priorCryptoConvertValue = 0;
+  TextEditingController cryptoTwoConvertController = TextEditingController();
+  TextEditingController currencyController = TextEditingController();
 
-  List<String> get _listTextSelectedToggle =>
-      ["Select A (10)", "Select B (6)", "Select C (9)"];
-
-  List<String> get _listGenderText => ["Male", "Female"];
-
-  // RxList leftViewTopWidgetList = <CryptoData>[].obs;
-  // List<CryptoData> leftViewTopWidgetList = [];
+  // TOGGLE TABS
+  RxInt convertIndex = 0.obs;
+  RxInt portfolioIndex = 0.obs;
+  List<String> portfolioToggleList = ['Crypto', 'Portfolio'];
+  List<String> convertToggleList = ['Transact', 'Repeat'];
 
   Controller() {}
 
@@ -39,12 +47,12 @@ class Controller extends GetxController {
 
   Future<void> _init() async {
     logger = Logger();
+    // dropDownValue = dropDownList.first;
+
     await _initLocalStorage();
     await checkForCryptoList();
     await loadCryptoList();
-    // leftViewTopWidgetList = getRandomCryptoList(cryptoList, 3).obs;
     await buildLeftTopWidgetList();
-    logger.e("${leftViewTopWidgetList[0]}");
   }
 
   // STORAGE
@@ -60,6 +68,10 @@ class Controller extends GetxController {
       debugPrint("No current list ... Data fetched!");
       await fetchData();
     }
+  }
+
+  Future<void> buildDropDownList(List<CryptoData> list) async {
+    list.forEach((Crypto) {});
   }
 
   Future<void> buildLeftTopWidgetList() async {
@@ -81,9 +93,16 @@ class Controller extends GetxController {
 
     logger.i(cryptoList.length);
 
-    cryptoList.forEach((cryptoData) {
-      logger.i(cryptoData.toString());
+    cryptoList.forEach((crypto) {
+      dropDownList.add(crypto.name);
+      dropDownSymbols.add(crypto.symbol);
+
+      logger.i(crypto.toString());
     });
+    dropDownValue = dropDownList.first;
+
+    debugPrint("dropDown list: $dropDownList");
+    debugPrint("dropDown symbols: $dropDownSymbols");
   }
 
   // possibly make this save any kind of data regardless of the type
@@ -136,70 +155,94 @@ class Controller extends GetxController {
 
     return selectedList;
   }
-  // List getRandomCryptoList(RxList cryptoList, int count) {
-  //   Random random = Random();
-  //   List selectedList = [];
 
-  //   if (count >= cryptoList.length) {
-  //     return cryptoList;
-  //   }
-
-  //   while (selectedList.length < count) {
-  //     int index = random.nextInt(cryptoList.length);
-  //     var crypto = cryptoList[index];
-
-  //     if (!selectedList.contains(crypto)) {
-  //       selectedList.add(crypto);
-  //     }
-  //   }
-
-  //   return selectedList;
-  // }
-
-  // NUMBER CLEAN UP FUNCTION
+  // NUMBER CLEAN UP FUNCTIONS
   bool isPositive(double number) {
     return number >= 0;
   }
 
-  String formatNumberWithDecimalPlaces(double number, int decimals) {
-    return number.toStringAsFixed(decimals);
-  }
+  // String formatNumberWithDecimalPlaces(double number, int decimals) {
+  //   return number.toStringAsFixed(decimals);
+  // }
 
   String formatPercentage(double number) {
     return "${number.toStringAsFixed(2)}%";
   }
 
-  String shortenDollarAmount(double number) {
+  String formatDollarAmount(double number) {
     if (number < 0) {
-      return '\$ ${number.toStringAsFixed(4)}';
+      return '\$ ${number.toStringAsFixed(2)}';
     } else if (number >= 1000000000000) {
-      return '\$ ${(number / 1000000000000).toStringAsFixed(1)}T';
+      return '\$ ${(number / 1000000000000).toStringAsFixed(1).replaceAllMapped(
+            RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+            (Match match) => '${match[1]},',
+          )}T';
     } else if (number >= 1000000000) {
-      return '\$ ${(number / 1000000000).toStringAsFixed(1)}B';
+      return '\$ ${(number / 1000000000).toStringAsFixed(1).replaceAllMapped(
+            RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+            (Match match) => '${match[1]},',
+          )}B';
     } else if (number >= 1000000) {
-      return '\$ ${(number / 1000000).toStringAsFixed(2)}M';
+      return '\$ ${(number / 1000000).toStringAsFixed(2).replaceAllMapped(
+            RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+            (Match match) => '${match[1]},',
+          )}M';
     } else {
-      return "\$${number.toString()}";
+      return "\$ ${number.toStringAsFixed(2)}";
     }
   }
 
-  String shortenRegularNumber(double number) {
+  String formatRegularNumber(double number) {
     if (number >= 1000000000) {
-      return '${(number / 1000000000).toStringAsFixed(1)}B';
+      return '${(number / 1000000000).toStringAsFixed(1).replaceAllMapped(
+            RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+            (Match match) => '${match[1]},',
+          )}B';
     } else if (number >= 1000000) {
-      return '${(number / 1000000).toStringAsFixed(2)}M';
+      return '${(number / 1000000).toStringAsFixed(2).replaceAllMapped(
+            RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+            (Match match) => '${match[1]},',
+          )}M';
     } else {
-      return number.toString();
+      return number.toStringAsFixed(2);
     }
   }
 
-  String formatPrice(double number) {
+  String formatListingPrice(double number) {
+    final formatter = NumberFormat("#,##0.00", "en_US");
+    final formattedNumber = formatter.format(number);
+
     if (number <= 1) {
       return "\$ ${number.toStringAsFixed(5)}";
     } else if (number < 10) {
       return "\$ ${number.toStringAsFixed(3)}";
     } else {
-      return "\$ ${number.toStringAsFixed(2)}";
+      // return "\$ ${number.toStringAsFixed(2)}";
+      return "\$ $formattedNumber";
+    }
+  }
+
+  String formatCryptoHolding(double number) {
+    final formatter = NumberFormat("#,##0.00000", "en_US");
+    final formattedNumber = formatter.format(number);
+
+    return formattedNumber;
+
+    //   if (number <= 1) {
+    //     return "${number.toStringAsFixed(5)}";
+    //   } else if (number < 10) {
+    //     return "${number.toStringAsFixed(3)}";
+    //   } else {
+    //     // return "${number.toStringAsFixed(2)}";
+    //     return "$formattedNumber";
+    //   }
+  }
+
+  String formatConvertValue(double newValue, double currentValue) {
+    if (newValue < currentValue) {
+      return formatCryptoHolding(currentValue - newValue);
+    } else {
+      return formatCryptoHolding(currentValue + newValue);
     }
   }
 }

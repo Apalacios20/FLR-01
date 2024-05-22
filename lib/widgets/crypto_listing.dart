@@ -91,7 +91,7 @@ class _CryptoListingState extends State<CryptoListing> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      widget.controller.formatPrice(widget.crypto.price),
+                      widget.controller.formatListingPrice(widget.crypto.price),
                       // "${widget.crypto.price}",
                       style: const TextStyle(
                           fontSize: 15, fontWeight: FontWeight.bold),
@@ -212,7 +212,7 @@ class _CryptoListingState extends State<CryptoListing> {
                                 ),
                                 Text(
                                   widget.controller
-                                      .formatPrice(widget.crypto.price),
+                                      .formatListingPrice(widget.crypto.price),
                                   style: const TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
@@ -274,34 +274,34 @@ class _CryptoListingState extends State<CryptoListing> {
                   ModalStatistic(
                     label: "24hr Volume",
                     stat: widget.controller
-                        .shortenDollarAmount(widget.crypto.twentyFourHrVolume),
+                        .formatDollarAmount(widget.crypto.twentyFourHrVolume),
                   ),
                   ModalStatistic(
                     label: "24hr Price Change",
-                    stat: widget.controller.shortenDollarAmount(
+                    stat: widget.controller.formatDollarAmount(
                         widget.crypto.twentyFourHrVolumeChange),
                   ),
                   ModalStatistic(
                     label: "Market Cap",
                     stat: widget.controller
-                        .shortenDollarAmount(widget.crypto.marketCap),
+                        .formatDollarAmount(widget.crypto.marketCap),
                   ),
                   ModalStatistic(
                     label: "Fully Diluted Market",
-                    stat: widget.controller.shortenDollarAmount(
+                    stat: widget.controller.formatDollarAmount(
                         widget.crypto.fullyDilutedMarketCap),
                   ),
                   ModalStatistic(
                     label: "Max Supply",
                     stat: widget.crypto.maxSupply == null
                         ? "Inifinite"
-                        : widget.controller.shortenRegularNumber(
+                        : widget.controller.formatRegularNumber(
                             widget.crypto.maxSupply as double),
                   ),
                   ModalStatistic(
                     label: "Total Supply",
                     stat: widget.controller
-                        .shortenRegularNumber(widget.crypto.totalSupply),
+                        .formatRegularNumber(widget.crypto.totalSupply),
                   ),
                   ModalStatistic(
                     label: "1hr",

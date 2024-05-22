@@ -42,7 +42,7 @@ class LeftViewTopWidgetItem extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  controller.formatPrice(crypto.price),
+                  controller.formatListingPrice(crypto.price),
                   style: const TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w600,

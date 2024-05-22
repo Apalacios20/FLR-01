@@ -2,7 +2,9 @@ import 'package:flare/models/crypto.dart';
 import 'package:flare/pages/controller.dart';
 import 'package:flare/widgets/crypto_listing.dart';
 import 'package:flare/widgets/pie_chart.dart';
+import 'package:flare/widgets/toggle_tab.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_toggle_tab/flutter_toggle_tab.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -33,36 +35,42 @@ class MiddleView extends StatelessWidget {
       ),
       child: Padding(
         padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Text(
-                "Coin X",
-                style: GoogleFonts.cinzel(
-                  textStyle: const TextStyle(
-                    fontSize: 50,
-                    letterSpacing: 15,
-                    fontWeight: FontWeight.bold,
-                    shadows: [
-                      Shadow(
-                          color: Colors.black,
-                          offset: Offset(1, 2),
-                          blurRadius: 3),
-                    ],
-                  ),
+        child: Column(
+          children: [
+            Text(
+              "Coin X",
+              style: GoogleFonts.cinzel(
+                textStyle: const TextStyle(
+                  fontSize: 50,
+                  letterSpacing: 15,
+                  fontWeight: FontWeight.bold,
+                  shadows: [
+                    Shadow(
+                        color: Colors.black,
+                        offset: Offset(1, 2),
+                        blurRadius: 3),
+                  ],
                 ),
               ),
-              const SizedBox(
-                height: 10,
-              ),
-              const MainPieChart(),
-              const SizedBox(
-                height: 20,
-              ),
-              Obx(
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            const MainPieChart(),
+            const SizedBox(
+              height: 20,
+            ),
+            ToggleTab(
+              selectedIndex: controller.portfolioIndex,
+              labels: controller.portfolioToggleList,
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Expanded(
+              child: Obx(
                 () => ListView.separated(
                   shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
                   itemCount: controller.cryptoList.length,
                   separatorBuilder: (BuildContext context, int index) {
                     return const SizedBox(
@@ -77,9 +85,9 @@ class MiddleView extends StatelessWidget {
                     );
                   },
                 ),
-              )
-            ],
-          ),
+              ),
+            ),
+          ],
         ),
       ),
     );
