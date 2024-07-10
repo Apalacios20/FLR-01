@@ -34,7 +34,8 @@ class ToggleTab extends StatelessWidget {
         labels: labels,
         selectedIndex: selectedIndex.value,
         selectedLabelIndex: (index) {
-          selectedIndex.value = index;
+          // AP20 / comment back in when 2nd tabs are ready
+          // selectedIndex.value = index;
         },
       ),
     );

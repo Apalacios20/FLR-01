@@ -4,7 +4,6 @@ import 'package:flare/widgets/crypto_listing.dart';
 import 'package:flare/widgets/pie_chart.dart';
 import 'package:flare/widgets/toggle_tab.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_toggle_tab/flutter_toggle_tab.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 

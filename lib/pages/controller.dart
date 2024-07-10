@@ -1,9 +1,7 @@
 import 'dart:convert';
-import 'dart:html';
 import 'dart:math';
 
 import 'package:flare/models/crypto.dart';
-import 'package:flare/widgets/left_view_top_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -34,8 +32,8 @@ class Controller extends GetxController {
   // TOGGLE TABS
   RxInt convertIndex = 0.obs;
   RxInt portfolioIndex = 0.obs;
-  List<String> portfolioToggleList = ['Crypto', 'Portfolio'];
-  List<String> convertToggleList = ['Transact', 'Repeat'];
+  List<String> portfolioToggleList = ['Crypto', 'Portfolio (Coming soon)'];
+  List<String> convertToggleList = ['Transact', 'Repeat (Coming soon)'];
 
   Controller() {}
 

@@ -20,7 +20,6 @@ class _ModalStatisticState extends State<ModalStatistic> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     if (widget.isPercentage == true) {

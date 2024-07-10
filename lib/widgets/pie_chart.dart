@@ -59,9 +59,9 @@ class MainPieChartState extends State {
       switch (i) {
         case 0:
           return PieChartSectionData(
-            color: Colors.blue,
-            value: 40,
-            title: '40%',
+            color: Colors.black,
+            value: 45,
+            title: '45%',
             radius: radius,
             titleStyle: TextStyle(
               fontSize: fontSize,
@@ -70,7 +70,7 @@ class MainPieChartState extends State {
               shadows: shadows,
             ),
             badgeWidget: _Badge(
-              'assets/BTC.svg',
+              'assets/XRP.svg',
               size: widgetSize,
               borderColor: Colors.black,
             ),
@@ -78,9 +78,9 @@ class MainPieChartState extends State {
           );
         case 1:
           return PieChartSectionData(
-            color: Colors.yellow,
-            value: 30,
-            title: '30%',
+            color: Colors.amber,
+            value: 25,
+            title: '25%',
             radius: radius,
             titleStyle: TextStyle(
               fontSize: fontSize,
@@ -98,8 +98,8 @@ class MainPieChartState extends State {
         case 2:
           return PieChartSectionData(
             color: Colors.purple,
-            value: 16,
-            title: '16%',
+            value: 20,
+            title: '20%',
             radius: radius,
             titleStyle: TextStyle(
               fontSize: fontSize,
@@ -108,7 +108,7 @@ class MainPieChartState extends State {
               shadows: shadows,
             ),
             badgeWidget: _Badge(
-              'assets/XRP.svg',
+              'assets/SOL.svg',
               size: widgetSize,
               borderColor: Colors.black,
             ),
@@ -116,9 +116,9 @@ class MainPieChartState extends State {
           );
         case 3:
           return PieChartSectionData(
-            color: Colors.green,
-            value: 15,
-            title: '15%',
+            color: Colors.blue,
+            value: 10,
+            title: '10%',
             radius: radius,
             titleStyle: TextStyle(
               fontSize: fontSize,
@@ -127,7 +127,7 @@ class MainPieChartState extends State {
               shadows: shadows,
             ),
             badgeWidget: _Badge(
-              'assets/USDT.svg',
+              'assets/USDC.svg',
               size: widgetSize,
               borderColor: Colors.black,
             ),
