@@ -16,7 +16,6 @@ class ToggleTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(
       () => FlutterToggleTab(
-        // TODO: MAKE WIDTH DYNAMIC
         width: 27,
         height: 30,
         borderRadius: 15,

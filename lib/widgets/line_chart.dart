@@ -2,7 +2,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
-// TODO: set data to crypto is doing during the filtered set time (24hr, 1d, 30d, etc...)
 class MainLineChart extends StatefulWidget {
   const MainLineChart({super.key});
 
@@ -36,24 +35,24 @@ class _MainLineChartState extends State<MainLineChart> {
             ),
           ),
         ),
-        SizedBox(
-          width: 60,
-          height: 34,
-          child: TextButton(
-            onPressed: () {
-              setState(() {
-                showAvg = !showAvg;
-              });
-            },
-            child: Text(
-              'avg',
-              style: TextStyle(
-                fontSize: 12,
-                color: showAvg ? Colors.white.withOpacity(0.5) : Colors.white,
-              ),
-            ),
-          ),
-        ),
+        // SizedBox(
+        //   width: 60,
+        //   height: 34,
+        //   child: TextButton(
+        //     onPressed: () {
+        //       setState(() {
+        //         showAvg = !showAvg;
+        //       });
+        //     },
+        //     child: Text(
+        //       'avg',
+        //       style: TextStyle(
+        //         fontSize: 12,
+        //         color: showAvg ? Colors.white.withOpacity(0.5) : Colors.white,
+        //       ),
+        //     ),
+        //   ),
+        // ),
       ],
     );
   }

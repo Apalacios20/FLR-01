@@ -68,10 +68,6 @@ class Controller extends GetxController {
     }
   }
 
-  Future<void> buildDropDownList(List<CryptoData> list) async {
-    list.forEach((Crypto) {});
-  }
-
   Future<void> buildLeftTopWidgetList() async {
     RxList<CryptoData> leftList = getRandomCryptoList(cryptoList, 3);
     leftViewTopWidgetList.addAll(leftList);
@@ -103,22 +99,11 @@ class Controller extends GetxController {
     debugPrint("dropDown symbols: $dropDownSymbols");
   }
 
-  // possibly make this save any kind of data regardless of the type
   Future<void> saveData(String localStorageKey, dynamic data) async {
     _localStorage.setItem(localStorageKey, data);
   }
 
-  // local storage get STRING
-  Future<String> getThisInfo(String infoRequest) async {
-    String request = await _localStorage.getItem(infoRequest);
-
-    return request == '' ? '' : request;
-  }
-
   // API CALLS
-
-  // FETCH DATA // SEE IF YOU CAN MAKE UNIVERSAL BY ADDING STRING PARAMETER FOR LOCAL STORAGE ID
-  // later i want this fetch to build the new list to display upon complete request
   Future<void> fetchData() async {
     try {
       final response = await http.get(Uri.parse('http://localhost:3000/'));
@@ -158,10 +143,6 @@ class Controller extends GetxController {
   bool isPositive(double number) {
     return number >= 0;
   }
-
-  // String formatNumberWithDecimalPlaces(double number, int decimals) {
-  //   return number.toStringAsFixed(decimals);
-  // }
 
   String formatPercentage(double number) {
     return "${number.toStringAsFixed(2)}%";
@@ -215,7 +196,6 @@ class Controller extends GetxController {
     } else if (number < 10) {
       return "\$ ${number.toStringAsFixed(3)}";
     } else {
-      // return "\$ ${number.toStringAsFixed(2)}";
       return "\$ $formattedNumber";
     }
   }
@@ -225,22 +205,5 @@ class Controller extends GetxController {
     final formattedNumber = formatter.format(number);
 
     return formattedNumber;
-
-    //   if (number <= 1) {
-    //     return "${number.toStringAsFixed(5)}";
-    //   } else if (number < 10) {
-    //     return "${number.toStringAsFixed(3)}";
-    //   } else {
-    //     // return "${number.toStringAsFixed(2)}";
-    //     return "$formattedNumber";
-    //   }
-  }
-
-  String formatConvertValue(double newValue, double currentValue) {
-    if (newValue < currentValue) {
-      return formatCryptoHolding(currentValue - newValue);
-    } else {
-      return formatCryptoHolding(currentValue + newValue);
-    }
   }
 }

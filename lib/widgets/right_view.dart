@@ -51,7 +51,7 @@ class _RightViewState extends State<RightView> {
           const SizedBox(
             height: 20,
           ),
-          // TODO: LEFT OFF BULDING THE ANYTHING TO ANYTHING TOGGLE
+          // TODO: BUiLD THE ANYTHING TO ANYTHING TOGGLE
           ToggleTab(
             selectedIndex: widget.controller.convertIndex,
             labels: widget.controller.convertToggleList,
@@ -84,7 +84,6 @@ class _RightViewState extends State<RightView> {
                   child: TextField(
                     controller: widget.controller.cryptoConvertController,
                     onChanged: (value) {
-                      // TODO: DEEM THIS IN CONTROLLER
                       if (value == "") {
                         widget.controller.currencyController.text = "";
                         widget.controller.cryptoTwoConvertController.text = "";

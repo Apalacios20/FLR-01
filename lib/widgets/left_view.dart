@@ -71,7 +71,6 @@ class LeftView extends StatelessWidget {
             flex: 8,
             child: Container(
               padding: const EdgeInsets.all(15),
-              // height: MediaQuery.of(context).size.height * .15,
               width: MediaQuery.of(context).size.width * .30,
               decoration: BoxDecoration(
                 color: Colors.white,

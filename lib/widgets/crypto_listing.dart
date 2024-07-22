@@ -30,10 +30,6 @@ class _CryptoListingState extends State<CryptoListing> {
         widget.controller.isPositive(widget.crypto.twentyFourHrPercentChange);
   }
 
-  // bool isPositive(double number) {
-  //   return number >= 0;
-  // }
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -152,7 +148,6 @@ class _CryptoListingState extends State<CryptoListing> {
                       Obx(
                         () => IconButton(
                           onPressed: () {
-                            // TODO: append to external list that will populate other page
                             favorite(
                                 widget.crypto, widget.controller.watchList);
                             debugPrint("${widget.controller.watchList.length}");
@@ -163,7 +158,6 @@ class _CryptoListingState extends State<CryptoListing> {
                                     .contains(widget.crypto)
                                 ? Colors.yellow[700]
                                 : Colors.grey,
-                            // fill: 5.0,
                           ),
                         ),
                       ),
@@ -270,7 +264,6 @@ class _CryptoListingState extends State<CryptoListing> {
                   const SizedBox(
                     height: 10,
                   ),
-                  // TODO: ITERATE OVER THE NAMES OF FIELDS AND DISPLAY
                   ModalStatistic(
                     label: "24hr Volume",
                     stat: widget.controller
