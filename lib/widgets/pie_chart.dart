@@ -3,7 +3,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-// TODO: CUSTOMIZE THE PIE CHART ACCORDINGLY // MARKETCAP?
+// NOTE: Pie chart values are static / Upgrade on the next update
 class MainPieChart extends StatefulWidget {
   const MainPieChart({super.key});
 

@@ -45,7 +45,6 @@ class Controller extends GetxController {
 
   Future<void> _init() async {
     logger = Logger();
-    // dropDownValue = dropDownList.first;
 
     await _initLocalStorage();
     await checkForCryptoList();

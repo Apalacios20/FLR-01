@@ -88,7 +88,6 @@ class _CryptoListingState extends State<CryptoListing> {
                   children: [
                     Text(
                       widget.controller.formatListingPrice(widget.crypto.price),
-                      // "${widget.crypto.price}",
                       style: const TextStyle(
                           fontSize: 15, fontWeight: FontWeight.bold),
                     ),
@@ -264,6 +263,8 @@ class _CryptoListingState extends State<CryptoListing> {
                   const SizedBox(
                     height: 10,
                   ),
+                  //  Note: For the sake of getting this project out to have one in the portfolio this is the result
+                  // Ideally i would iterate through the list into widgets / Upgrade on the next update
                   ModalStatistic(
                     label: "24hr Volume",
                     stat: widget.controller
